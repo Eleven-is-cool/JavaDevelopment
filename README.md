@@ -23,6 +23,6 @@
 ## :artificial_satellite:计算机网络
 
 1. [OSI七层](https://github.com/Eleven-is-cool/JavaDevelopment/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/OSI%E4%B8%83%E5%B1%82.md)
-2. [TCP & UDP & Socket](https://github.com/Eleven-is-cool/JavaDevelopment/blob/master/计算机网络/TCP %26 UDP %26 Socket.md)
-3. [HTTP & HTTPS](https://github.com/Eleven-is-cool/JavaDevelopment/blob/master/计算机网络/HTTP %26 HTTPS.md)
+2. [TCP & UDP & Socket](https://github.com/Eleven-is-cool/JavaDevelopment/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/TCP%20%26%20UDP%20%26%20Socket.md)
+3. [HTTP & HTTPS](https://github.com/Eleven-is-cool/JavaDevelopment/blob/master/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/HTTP%20%26%20HTTPS.md)
 
