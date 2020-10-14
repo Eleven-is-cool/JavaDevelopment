@@ -8,6 +8,12 @@ UDP报文的**最大长度为512字节**
 
 TCP允许报文长度**超过512字节**
 
+# TCP 、UDP、IP包的最大长度
+
+:link: ​[TCP 、UDP、IP包的最大长度是多少？](https://blog.csdn.net/lishanmin11/article/details/77045745)
+
+:link: ​[TCP、UDP数据包大小的限制](https://blog.csdn.net/caoshangpa/article/details/51530685?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.channel_param&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.channel_param)
+
 # 重传机制
 
 ## 超时重传
@@ -123,9 +129,9 @@ TCP允许报文长度**超过512字节**
 
 同步阻塞I/O模式，数据的读取写入必须阻塞在一个线程内等待其完成。
 
-**单线程：**服务端，通常由一个独立的 Acceptor 线程负责监听客户端的连接。我们一般通过在`while(true)` 循环中服务端会调用 `accept()` 方法等待接收客户端的连接的方式监听请求，请求一旦接收到一个连接请求，就可以建立通信套接字在这个通信套接字上进行读写操作，此时不能再接收其他客户端连接请求，只能等待同当前连接的客户端的操作执行完成
+**单线程**：服务端，通常由一个独立的 Acceptor 线程负责监听客户端的连接。我们一般通过在`while(true)` 循环中服务端会调用 `accept()` 方法等待接收客户端的连接的方式监听请求，请求一旦接收到一个连接请求，就可以建立通信套接字在这个通信套接字上进行读写操作，此时不能再接收其他客户端连接请求，只能等待同当前连接的客户端的操作执行完成
 
-**多线程：**接收到客户端连接请求之后为每个客户端创建一个新的线程进行链路处理，处理完成之后，通过输出流返回应答给客户端，线程销毁。这就是典型的 **一请求一应答通信模型** 。
+**多线程**：接收到客户端连接请求之后为每个客户端创建一个新的线程进行链路处理，处理完成之后，通过输出流返回应答给客户端，线程销毁。这就是典型的 **一请求一应答通信模型** 。
 
 **总结**
 
@@ -166,3 +172,4 @@ NIO中的N可以理解为Non-blocking，不单纯是New。它支持面向缓冲�
 ### AIO (Asynchronous I/O)
 
 异步非阻塞的IO模型。异步 IO 是**基于事件和回调机制**实现的，也就是应用操作之后会直接返回，不会堵塞在那里，当后台处理完成，操作系统会通知相应的线程进行后续的操作。
+
