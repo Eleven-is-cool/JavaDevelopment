@@ -28,42 +28,42 @@
 
 ## 事务的四大特性(ACID)
 
-1. **原子性（Atomicity）：** 事务是最小的执行单位，不允许分割。事务的原子性确保动作要么全部完成，要么完全不起作用；
-2. **一致性（Consistency）：**执行事务前后，数据保持一致，多个事务对同一个数据读取的结果是相同的；
-3. **隔离性（Isolation）：**并发访问数据库时，一个用户的事务不被其他事务所干扰，各并发事务之间数据库是独立的；
-4. **持久性（Durability）：**一个事务被提交之后。它对数据库中数据的改变是持久的，即使数据库发生故障也不应该对其有任何影响。
+1. **原子性（Atomicity）**： 事务是最小的执行单位，不允许分割。事务的原子性确保动作要么全部完成，要么完全不起作用；
+2. **一致性（Consistency）**：执行事务前后，数据保持一致，多个事务对同一个数据读取的结果是相同的；
+3. **隔离性（Isolation）**：并发访问数据库时，一个用户的事务不被其他事务所干扰，各并发事务之间数据库是独立的；
+4. **持久性（Durability）**：一个事务被提交之后。它对数据库中数据的改变是持久的，即使数据库发生故障也不应该对其有任何影响。
 
 ## MySQL数据类型
 
 主要包括以下五大类：
 
-**整数类型：**BIT、BOOL、TINY INT、SMALL INT、MEDIUM INT、 INT、 BIG INT
+**整数类型**：BIT、BOOL、TINY INT、SMALL INT、MEDIUM INT、 INT、 BIG INT
 
-**浮点数类型：**FLOAT、DOUBLE、DECIMAL
+**浮点数类型**：FLOAT、DOUBLE、DECIMAL
 
-**字符串类型：**CHAR、VARCHAR、TINY TEXT、TEXT、MEDIUM TEXT、LONGTEXT、TINY BLOB、BLOB、MEDIUM BLOB、LONG BLOB
+**字符串类型**：CHAR、VARCHAR、TINY TEXT、TEXT、MEDIUM TEXT、LONGTEXT、TINY BLOB、BLOB、MEDIUM BLOB、LONG BLOB
 
-**日期类型：**Date、DateTime、TimeStamp、Time、Year
+**日期类型**：Date、DateTime、TimeStamp、Time、Year
 
-**其他数据类型：**BINARY、VARBINARY、ENUM、SET、Geometry、Point、MultiPoint、LineString、MultiLineString、Polygon、GeometryCollection等
+**其他数据类型**：BINARY、VARBINARY、ENUM、SET、Geometry、Point、MultiPoint、LineString、MultiLineString、Polygon、GeometryCollection等
 
 ## 系统的三级模式结构
 
 数据库系统的三级模式结构是指数据库系统由外模式、模式和内模式三级构成。
 
-- **模式：**也称逻辑模式，数据库中全体数据的逻辑结构和特征的描述，所有用户的公共数据视图。
+- **模式**：也称逻辑模式，数据库中全体数据的逻辑结构和特征的描述，所有用户的公共数据视图。
 
   一个数据库只有一个模式。
 
   模式是数据库系统模式结构的中间层。
 
-- **外模式：**也称子模式或用户模式，数据库用户能够看见和使用的局部数据的逻辑结构和特征的描述， 是与某一应用有关的数据的逻辑表示。
+- **外模式**：也称子模式或用户模式，数据库用户能够看见和使用的局部数据的逻辑结构和特征的描述， 是与某一应用有关的数据的逻辑表示。
 
   外模式介于模式与应用之间，外模式通常是模式的子集。
 
   外模式与应用的关系也是一对多的关系，同一外模式也可以为某一用户的多个应用系统所使用， 但一个应用程序只能使用一个外模式。
 
-- **内模式：**也称存储模式，是数据物理结构和存储方式的描述，是数据在数据库内部的表示方式。
+- **内模式**：也称存储模式，是数据物理结构和存储方式的描述，是数据在数据库内部的表示方式。
 
   一个数据库只有一个内模式。
 
@@ -123,6 +123,25 @@ CREATE INDEX index_name ON table_name (column_list)
 - `where` 的查询条件里有不等号 `(where column != …)` , MySql 将无法使用索引
 - 如果 `where` 字句的查询条件里使用了函数(如：`where DAY(column)=…)`, MySql 将无法使用索引
 - 在 `join` 操作中(需要从多个数据表提取数据时)，MySql 只有在主键和外键的数据类型相同时才能使用索引，否则及时建立了索引也不会使用、
+
+## Join 语句的作用
+
+合理使用Join语句优化SQL有利于：
+
+1. 增加数据库的处理效率，减少响应时间；
+2. 减少数据库服务器负载，增加服务器稳定性；
+3. 减少服务器通讯的网络流量；
+
+## Join 的实现原理
+
+Join 的实现是采用 Nested Loop Join 算法，就是通过驱动表的结果集作为循环基础数据，然后一条一条的通过该结果集中的数据作为过滤条件到下一个表中查询数据，然后合并结果。如果有多个 Join，则将前面的结果集作为循环数据，再一次作为循环条件到后一个表中查询数据。
+
+## Join 语句的优化原则
+
+1. **用小结果集驱动大结果集**，将筛选结果小的表首先连接，再去连接结果集比较大的表，尽量减少join语句中的Nested Loop的循环总次数；
+2. **优先优化Nested Loop的内层循环**（也就是最外层的Join连接），因为内层循环是循环中执行次数最多的，每次循环提升很小的性能都能在整个循环中提升很大的性能；
+3. 对被驱动表的join字段上建立**索引**；
+4. 当被驱动表的join字段上无法建立索引的时候，设置**足够的Join Buffer Size**。
 
 ## 内连接和外连接、左连接和右连接
 
@@ -265,11 +284,11 @@ MVCC最大的优点是读不加锁，因此读写不冲突，并发性能好。I
 
 trx_sys中的主要内容，以及判断可见性的方法如下：
 
-**low_limit_id：**表示生成ReadView时系统中应该分配给下一个事务的id。如果数据的事务id大于等于low_limit_id，则对该ReadView不可见。
+**low_limit_id**：表示生成ReadView时系统中应该分配给下一个事务的id。如果数据的事务id大于等于low_limit_id，则对该ReadView不可见。
 
-**up_limit_id：**表示生成ReadView时当前系统中活跃的读写事务中最小的事务id。如果数据的事务id小于up_limit_id，则对该ReadView可见。
+**up_limit_id**：表示生成ReadView时当前系统中活跃的读写事务中最小的事务id。如果数据的事务id小于up_limit_id，则对该ReadView可见。
 
-**rw_trx_ids：**表示生成ReadView时当前系统中活跃的读写事务的事务id列表。如果数据的事务id在low_limit_id和up_limit_id之间，则需要判断事务id是否在rw_trx_ids中：如果在，说明生成ReadView时事务仍在活跃中，因此数据对ReadView不可见；如果不在，说明生成ReadView时事务已经提交了，因此数据对ReadView可见。
+**rw_trx_ids**：表示生成ReadView时当前系统中活跃的读写事务的事务id列表。如果数据的事务id在low_limit_id和up_limit_id之间，则需要判断事务id是否在rw_trx_ids中：如果在，说明生成ReadView时事务仍在活跃中，因此数据对ReadView不可见；如果不在，说明生成ReadView时事务已经提交了，因此数据对ReadView可见。
 
 ## 数据库索引的原理
 
@@ -564,6 +583,26 @@ mysql的主从复制都是单线程的操作，主库对所有DDL和DML产生的
 5.使用比主库更好的硬件设备作为slave，mysql压力小，延迟自然会变小。
 
 6.使用更加强劲的硬件设备
+
+### 模式划分
+
+**STATEMENT模式（SBR） **
+
+**记录每一条SQL修改**
+
+- 每一条会修改数据的sql语句会记录到binlog中。优点是并不需要记录每一条 sql 语句和每一行的数据变化，减少了 binlog 日志量，节约IO，提高性能。
+- 缺点是在某些情况下会导致 master-slave 中的数据不一致(如sleep()函数， last_insert_id()，以及user-defined functions(udf)等会出现问题)
+
+**ROW模式（RBR） **
+
+**仅记录修改的内容，不记录具体的SQL**
+
+- 不记录每条sql语句的上下文信息，仅需记录哪条数据被修改了，修改成什么样了。而且不会出现某些特定情况下的存储过程、或function、或trigger的调用和触发无法被正确复制的问题。
+- 缺点是会产生大量的日志，尤其是 altertable 的时候会让日志暴涨。
+
+**MIXED模式（MBR） **
+
+- 以上两种模式的混合使用，一般的复制使用STATEMENT模式保存binlog，对于STATEMENT模式无法复制的操作使用ROW模式保存binlog，MySQL会根据执行的SQL语句选择日志保存方式。
 
 ## JDBC 流程
 
